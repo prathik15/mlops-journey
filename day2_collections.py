@@ -27,4 +27,27 @@ print(f"After remove: {frameworks}")
 frameworks.sort()
 print(f"After sort: {frameworks}")
 
+# ── 2. Dictionary basics ──────────────────────────────────────────────────────
+ 
+print("\n=== dict basics ===")
+ 
+sample_model = {
+    "name"      : "RandomForest",
+    "algorithm" : "Ensemble",
+    "accuracy"  : 0.91,
+    "status"    : "deployed",
+}
+
+print(f"keys: {list(sample_model.keys())}")
+print(f"name: {sample_model["name"]}")
+print(f"accuracy: {sample_model.get("accuracy")}")
+print(f"missing-key: {sample_model.get("size", "Not Available")}\n")
+
+print( sample_model.items())
+print("\n==Print all Key value pairs==")
+
+for key, value in sample_model.items():
+    print(f"{key:<10} : {value}")
+
+
 
