@@ -6,72 +6,72 @@
 
 # ========= 1. List basics — before we add models ================
 
-# frameworks = ['Pytorch', 'Tensorflow', 'scikit-learn', 'XGBoost', 'Keras']
+frameworks = ['Pytorch', 'Tensorflow', 'scikit-learn', 'XGBoost', 'Keras']
 
-# print ("==== list basics ====")
+print ("==== list basics ====")
 
-# print(f"All frameworks: {frameworks}")
-# print(f"First item: {frameworks[0]}")
-# print(f"last item: {frameworks[-1]}")
-# print (f"first three: {frameworks[:3]}")       #slicing (start:stop)
-# print (f"first three: {frameworks[:-2]}")      #slicing from back
-# print(f"middle three: {frameworks[1:4]}")
-# print(f"total count: {len(frameworks)}")
+print(f"All frameworks: {frameworks}")
+print(f"First item: {frameworks[0]}")
+print(f"last item: {frameworks[-1]}")
+print (f"first three: {frameworks[:3]}")       #slicing (start:stop)
+print (f"first three: {frameworks[:-2]}")      #slicing from back
+print(f"middle three: {frameworks[1:4]}")
+print(f"total count: {len(frameworks)}")
 
-# frameworks.append("LightGBM")
-# print(f"After append: {frameworks}")
+frameworks.append("LightGBM")
+print(f"After append: {frameworks}")
 
-# frameworks.remove("XGBoost")
-# print(f"After remove: {frameworks}")
+frameworks.remove("XGBoost")
+print(f"After remove: {frameworks}")
 
-# frameworks.sort()
-# print(f"After sort: {frameworks}")
+frameworks.sort()
+print(f"After sort: {frameworks}")
 
-# # ── 2. Dictionary basics ──────────────────────────────────────────────────────
+# ── 2. Dictionary basics ──────────────────────────────────────────────────────
  
-# print("\n=== dict basics ===")
+print("\n=== dict basics ===")
  
-# sample_model = {
-#     "name"      : "RandomForest",
-#     "algorithm" : "Ensemble",
-#     "accuracy"  : 0.91,
-#     "status"    : "deployed",
-# }
+sample_model = {
+    "name"      : "RandomForest",
+    "algorithm" : "Ensemble",
+    "accuracy"  : 0.91,
+    "status"    : "deployed",
+}
 
-# print(f"keys: {list(sample_model.keys())}")
-# print(f"name: {sample_model["name"]}")
-# print(f"accuracy: {sample_model.get("accuracy")}")
-# print(f"missing-key: {sample_model.get("size", "Not Available")}\n")
+print(f"keys: {list(sample_model.keys())}")
+print(f"name: {sample_model["name"]}")
+print(f"accuracy: {sample_model.get("accuracy")}")
+print(f"missing-key: {sample_model.get("size", "Not Available")}\n")
 
-# print( sample_model.items())
-# print("\n==Print all Key value pairs==")
+print( sample_model.items())
+print("\n==Print all Key value pairs==")
 
-# for key, value in sample_model.items():
-#     print(f"{key:<10} : {value}")
-# print("\n")  
+for key, value in sample_model.items():
+    print(f"{key:<10} : {value}")
+print("\n")  
 
-# #combining enumerate and items() with dictionaries 
-# for index, (key,value) in enumerate(sample_model.items(),start=1):
+#combining enumerate and items() with dictionaries 
+for index, (key,value) in enumerate(sample_model.items(),start=1):
  
-#     print(f" Field {index} --> {key} : {value}")
+    print(f" Field {index} --> {key} : {value}")
 
-# # ── 3. Nested dict — model with metadata inside ───────────────────────────────
+# ── 3. Nested dict — model with metadata inside ───────────────────────────────
 
-# print("\n==== Nested dict ====")
+print("\n==== Nested dict ====")
 
-# nested_model = {
-#     "Name" : "RandomFrest",
-#     "Accuracy" : 0.91,
-#     "Status" : "deployed",
-#     "metadata" : {
-#         "framework" : "pytorch",
-#         "epochs" : 10,
-#     }
-# }
+nested_model = {
+    "Name" : "RandomFrest",
+    "Accuracy" : 0.91,
+    "Status" : "deployed",
+    "metadata" : {
+        "framework" : "pytorch",
+        "epochs" : 10,
+    }
+}
 
-# print(f"model : {nested_model["Name"]}")
-# print(f"framework : {nested_model["metadata"]["framework"]}")
-# print(f"epochs : {nested_model["metadata"]["epochs"]}")
+print(f"model : {nested_model["Name"]}")
+print(f"framework : {nested_model["metadata"]["framework"]}")
+print(f"epochs : {nested_model["metadata"]["epochs"]}")
 
 # ── 4. Main build — 5 ML models in a list of dicts ───────────────────────────
  
