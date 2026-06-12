@@ -35,7 +35,7 @@ write_text_demo()
 def write_demo_csv():
     with open("models.csv","w") as f:
         f.write("name,algorithm,accuracy\n")
-        f.write("BERT,pytorch,98.43\n")
+        f.write("BERT,pytorch,0.82\n")
         f.write("RandomForest,Ensemble,0.91\n")
         
 def read_demo_csv_manually(filepath):
@@ -60,6 +60,76 @@ csv_models = read_demo_csv_manually("models.csv")
 
 print("=== priting csv manually ===")
 for m in csv_models:
-    print(f"{m["name"]} --->  {m["accuracy"]}")
+    print(f"{m["name"]:<22} --->  {m["accuracy"]:.0%}")
     
+ # ── 3. The model data ─────────────────────────────────────────────────────────
+ 
+def get_models():
+    return [
+        {"name": "LogisticRegression", "algorithm": "Linear",   "accuracy": 0.78, "status": "retired"},
+        {"name": "RandomForest",       "algorithm": "Ensemble", "accuracy": 0.91, "status": "deployed"},
+        {"name": "XGBoost",            "algorithm": "Boosting", "accuracy": 0.94, "status": "deployed"},
+        {"name": "SVM",                "algorithm": "Kernel",   "accuracy": 0.83, "status": "staging"},
+        {"name": "NeuralNetwork",      "algorithm": "Deep",     "accuracy": 0.96, "status": "deployed"},
+    ]
+# ── 4. Save models to JSON ────────────────────────────────────────────────────
+
+def save_models(models, filepath=MODELS_FILE):
+    """Write the models list to a json file
+    Raises ValueError if models list is empty - no point in storing a list that is empty"""
     
+    if not models:
+        raise ValueError("The models list is empty")
+    
+    with open(filepath, "w") as f:
+        json.dump(models,f,indent=4)
+        
+    print("\n===== wrting to json file =====")    
+    print(f" saved {len(models)} to {filepath}")
+        
+# ── 5. Load models from JSON — with full exception handling ───────────────────
+
+def load_models(filepath=MODELS_FILE):
+    """
+    Load models from a JSON file.
+ 
+    Handles three failure cases:
+      - File doesn't exist yet     → create it with defaults, return defaults
+      - File exists but is corrupt → warn and return defaults
+      - File exists but is empty   → treat same as corrupt
+    """
+    try:
+        with open(filepath, "r") as f:
+            content = f.read().strip()
+            
+        if not content:
+            raise ValueError("The file is empty")
+        
+        models = json.loads(content)
+        print(f"loaded {len(models)} from '{filepath}'")
+        return models
+    
+    except FileNotFoundError:
+        # File doesn't exist at all — first run scenario
+
+        print(f"{filepath} not found, creating a file with default models...")
+        defaults = get_models()
+        save_models(defaults, filepath)
+        return defaults
+    
+    except (json.JSONDecodeError, ValueError) as e:
+        # File exists but content is broken or empty
+        print(f"could not read '{filepath}' : {e}")
+        print(f"falling back to default model")
+        return get_models()
+    
+    finally:
+        # finally ALWAYS runs — whether it succeeded, failed, or raised
+        print(f"load attempt complete for {filepath}")
+        
+# ── 6. Demonstrate raise ──────────────────────────────────────────────────────
+# 'raise' lets you deliberately trigger an exception with a clear message
+
+
+        
+            
