@@ -131,5 +131,35 @@ def load_models(filepath=MODELS_FILE):
 # 'raise' lets you deliberately trigger an exception with a clear message
 
 
-        
-            
+def validate_model(model):
+    """
+    Check a model dict has required fields and valid values.
+    Raises descriptive exceptions instead of silently passing bad data.
+    """
+    if "name" not in model:
+        raise KeyError("Model is missing required field: 'name'")
+    
+    if "accuracy" not in model:
+        raise KeyError("Model is missing required field: 'accuracy'")
+    
+    if not isinstance(model["accuracy"], (int,float)):
+        raise TypeError(f"accuracy must be a number, got {type(model["accuracy"]).__name__}")
+    
+    if not [0.0 <= model["accuracy"] <= 1.0]:
+        raise ValueError(f"accuracy must be a 0 and 1, got {model["accuracy"]}")
+    
+    return True    # all checks passed
+
+
+print("\n ==== validate model with raise ===")
+
+# Test 1: valid model — should pass
+try:
+    validate_model({"name":"XGBoost", "accuracy":0.94})
+    print("valid model passed validation")
+    
+except(KeyError, ValueError, TypeError) as e:
+    print(f"X {e}")
+    
+# Test 2: missing name — should raise KeyError
+
