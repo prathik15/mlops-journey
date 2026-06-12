@@ -163,3 +163,24 @@ except(KeyError, ValueError, TypeError) as e:
     
 # Test 2: missing name — should raise KeyError
 
+try:
+    validate_model({"accuracy":0.94})
+    print("passed")
+except KeyError as e:
+    print(f"keyerror caught: {e}")
+    
+# Test 3: accuracy out of range — should raise ValueError
+try:
+    validate_model({"name":"badmodel", "accuracy": 1.82})
+    print("passed")
+except ValueError as e:
+    print(f"valueError caught: {e}")
+    
+    
+# ── 7. Simulate corrupted file ────────────────────────────────────────────────
+
+def simmulate_corrupted_file(filepath="corrupted.json"):
+    with open(filepath,"w") as e:
+        f.write("this is a corrupted file!")
+    return filepath    
+  
