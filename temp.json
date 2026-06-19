@@ -1,0 +1,32 @@
+[
+    {
+        "name": "LogisticRegression",
+        "algorithm": "Linear",
+        "accuracy": 0.78,
+        "status": "retired"
+    },
+    {
+        "name": "RandomForest",
+        "algorithm": "Ensemble",
+        "accuracy": 0.91,
+        "status": "deployed"
+    },
+    {
+        "name": "XGBoost",
+        "algorithm": "Boosting",
+        "accuracy": 0.94,
+        "status": "deployed"
+    },
+    {
+        "name": "SVM",
+        "algorithm": "Kernel",
+        "accuracy": 0.83,
+        "status": "staging"
+    },
+    {
+        "name": "NeuralNetwork",
+        "algorithm": "Deep",
+        "accuracy": 0.96,
+        "status": "deployed"
+    }
+]
