@@ -187,3 +187,6 @@ def simmulate_corrupted_file(filepath="corrupted.json"):
 
 # ── 8. Run the full pipeline ──────────────────────────────────────────────────
 
+print("\n" + "=" *50)
+print(" PIPELINE: save -> corrupt -> reload ->  fallback")
+print ('='*50)
