@@ -67,5 +67,27 @@ def validate_models(model: dict) -> bool:
 
 # ── File I/O ──────────────────────────────────────────────────────────────────
 
-def 
-            
+def save_models(models: list[dict], filepath = MODELS_FILE) -> None:
+    """
+    Serialise the model list to a JSON file.
+ 
+    Args:
+        models (list[dict]): The list of model records to save.
+        filepath (str): Destination file path. Defaults to MODELS_FILE.
+ 
+    Raises:
+        ValueError: If the models list is empty.
+    """
+    
+    if not models:
+       raise ValueError("cannot save - models list is empty")
+   
+    path = path(filepath)
+    path.parent.mkdir(parents=True, exist_ok=True)          #create folders if needed
+    
+    with open(path, "w") as f:
+        json.dumps(models, f , indent=4)
+        
+    print(f" saved {len(models)} to {filepath}") 
+   
+               
