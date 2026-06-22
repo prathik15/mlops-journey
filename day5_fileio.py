@@ -185,8 +185,32 @@ def simmulate_corrupted_file(filepath="corrupted.json"):
     return filepath
   
 
-# ── 8. Run the full pipeline ──────────────────────────────────────────────────
+  # ── 8. Run the full pipeline ──────────────────────────────────────────────────
+ 
+print("\n" + "=" * 50)
+print("  PIPELINE: save → corrupt → reload → fallback")
+print("=" * 50)
 
-print("\n" + "=" *50)
-print(" PIPELINE: save -> corrupt -> reload ->  fallback")
-print ('='*50)
+# Step 1: save good data
+print("\n step1 ---> Save")
+save_models(get_models())
+
+# Step 2: load normally
+print("\n-- Step 2: load (should succeed) --")
+models = load_models()
+
+# Step 3: corrupt the file and try loading
+print("\n-- Step 3: load corrupted file --")
+bad_file = simmulate_corrupted_file()
+models = load_models(bad_file)
+
+# Step 4: load from non-existent file
+print("\n-- Step 4: load missing file --")
+
+if os.path.exists("temp.json"):
+    os.remove("temp.json")
+models = load_models("temp.json")
+
+print("\n" + "=" * 50)
+print(f"  Pipeline complete. {len(models)} models ready.")
+print("=" * 50)
