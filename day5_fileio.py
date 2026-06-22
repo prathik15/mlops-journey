@@ -180,7 +180,10 @@ except ValueError as e:
 # ── 7. Simulate corrupted file ────────────────────────────────────────────────
 
 def simmulate_corrupted_file(filepath="corrupted.json"):
-    with open(filepath,"w") as e:
+    with open(filepath,"w") as f:
         f.write("this is a corrupted file!")
-    return filepath    
+    return filepath
   
+
+# ── 8. Run the full pipeline ──────────────────────────────────────────────────
+

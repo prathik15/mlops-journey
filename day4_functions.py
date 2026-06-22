@@ -59,7 +59,7 @@ def most_accurate_model(*accuracies):
     if accuracies:
         return max(accuracies)
     else:
-        return none
+        return None
 
 print("\n=== *args ===")
 print(most_accurate_model(0.4,0.7,0.8,0.9))
@@ -76,15 +76,13 @@ def create_model(name, accuracy, **kwargs):
     model = {
         "name": name,
         "accuracy": accuracy,
-        "status": kwargs.get("status","staging"),
+        "status": kwargs.get("status", "staging"),
     }
-
-print("\n === **kwargs ===")
-print(create_model("Bert",8.25, status= "deployed", framework= "pytorch", created_at = 2026)) 
 
     # absorb any other kwargs as extra metadata
     for key, value in kwargs.items():
         model[key] = value
+
     return model
 
 print("\n=== **kwargs ===")
