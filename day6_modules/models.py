@@ -84,10 +84,8 @@ def save_models(models: list[dict], filepath = MODELS_FILE) -> None:
    
     path = path(filepath)
     path.parent.mkdir(parents=True, exist_ok=True)          #create folders if needed
-    
+
     with open(path, "w") as f:
         json.dumps(models, f , indent=4)
-        
-    print(f" saved {len(models)} to {filepath}") 
-   
-               
+
+    print(f" saved {len(models)} to {filepath}")
