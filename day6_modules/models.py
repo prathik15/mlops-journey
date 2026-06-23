@@ -66,8 +66,8 @@ def validate_models(model: dict) -> bool:
 
 
 # ── File I/O ──────────────────────────────────────────────────────────────────
-
-def save_models(models: list[dict], filepath = MODELS_FILE) -> None:
+ 
+def save_models(models: list[dict], filepath: str = MODELS_FILE) -> None:
     """
     Serialise the model list to a JSON file.
  
@@ -78,14 +78,109 @@ def save_models(models: list[dict], filepath = MODELS_FILE) -> None:
     Raises:
         ValueError: If the models list is empty.
     """
-    
     if not models:
-       raise ValueError("cannot save - models list is empty")
-   
-    path = path(filepath)
-    path.parent.mkdir(parents=True, exist_ok=True)          #create folders if needed
-
+        raise ValueError("Cannot save — models list is empty.")
+ 
+    path = Path(filepath)
+    path.parent.mkdir(parents=True, exist_ok=True)   # create folders if needed
+ 
     with open(path, "w") as f:
-        json.dumps(models, f , indent=4)
+        json.dump(models, f, indent=4)
+ 
+    print(f"  ✅ Saved {len(models)} models to '{filepath}'")
+ 
+ 
+def load_models(filepath: str = MODELS_FILE) -> list[dict]:
+    """
+    Load and return the model list from a JSON file.
+ 
+    Handles three failure cases gracefully:
+        - File not found  → creates it with defaults
+        - Empty file      → falls back to defaults
+        - Corrupt JSON    → falls back to defaults
+ 
+    Args:
+        filepath (str): Path to the JSON file. Defaults to MODELS_FILE.
+ 
+    Returns:
+        list[dict]: The loaded (or default) model list.
+    """
+    try:
+        with open(filepath, "r") as f:
+            content = f.read().strip()
+ 
+        if not content:
+            raise ValueError("File is empty.")
+ 
+        models = json.loads(content)
+        for model in models:
+            validate_models(model)           # validate every record on load
+ 
+        print(f"  ✅ Loaded {len(models)} models from '{filepath}'")
+        return models
+ 
+    except FileNotFoundError:
+        print(f"  ⚠️  '{filepath}' not found. Creating with defaults...")
+        defaults = get_models()
+        save_models(defaults, filepath)
+        return defaults
+ 
+    except (json.JSONDecodeError, ValueError, KeyError, TypeError) as e:
+        print(f"  ❌ Could not read '{filepath}': {e}")
+        print("  ↩️  Falling back to defaults.")
+        return get_models()
+ 
+    finally:
+        print(f"  [load attempt complete for '{filepath}']")
+        
+# ── Logic ─────────────────────────────────────────────────────────────────────
 
-    print(f" saved {len(models)} to {filepath}")
+def filter_by_accuracy(models: list[dict], threshold: float = 0.85) -> list[dict]:
+    """
+    Return models with accuracy at or above the threshold.
+ 
+    Args:
+        models (list[dict]): Full model list.
+        threshold (float): Minimum accuracy. Defaults to 0.85.
+ 
+    Returns:
+        list[dict]: Filtered model list.
+    """
+    return[m for m in models if m["accuracy"] >= threshold]
+
+
+def flag_for_retraining(models: list[dict], threshold: float = RETRAINING_THRESHOLD) -> list[dict]:
+    """
+    Mark models below the threshold as 'needs_retraining' (mutates in place).
+ 
+    Args:
+        models (list[dict]): Full model list.
+        threshold (float): Accuracy cutoff. Defaults to RETRAINING_THRESHOLD.
+ 
+    Returns:
+        list[str]: Names of models that were flagged.
+    """
+    
+    flagged: list[str] = []
+    
+    for model in models:
+        if model["accuracy"] < threshold:
+            model["status"] = "needs_retraining"
+            flagged.append(model["name"])
+            
+    return flagged
+
+
+def get_stats(models: list[dict]) -> dict:
+    
+    deployed = sum(1 for m in models if m["status"] == "deployed")
+    avg_acc = sum(m["accuracy"] for m in models) / len(models)
+    best = max(models, key=lambda m:m["accuracy"])       
+    
+    return{
+        "total" : models,
+        "deployed": deployed,
+        "avg_accuracy": avg_acc,
+        "best_model": best["name"],
+        "generated_at": datetime.now().strftime("%y-%m-%d %H:%M"),
+    }
